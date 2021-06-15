@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" >
+<head>
+    <meta charset="UTF-8">
+    <title>C19TC - EDIT VACCINE</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">C19TC</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item" sec:authorize="hasAnyRole('ROLE_ADMIN')">
+                        <a class="nav-link" th:href="@{/users}">Users</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/tests}">Tests</a>
+                    </li>
+                    <li class="nav-item" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_SECRETARY')">
+                        <a class="nav-link" th:href="@{/vaccine}">Vaccine</a>
+                    </li>
+                    <li class="nav-item" >
+                        <a class="nav-link" th:href="@{/book}">Book</a>
+                    </li>
+                </ul>
+                <form class="d-flex" th:action="@{/logout}" method="get">
+                    <button class="btn btn-outline-success" type="submit">Logout</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <div class="row">
+        <h3>Edit Vaccine Details</h3>
+
+        <form th:action="@{/updateVaccine}" th:object="${vaccine}" method="post">
+            <input type="hidden" class="form-control" id="id" required th:field="*{id}" name="id" placeholder="id"/>
+            <div class="mb-3">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" class="form-control" id="name" required th:field="*{name}" name="status" placeholder="name">
+            </div>
+
+            <div class="mb-3">
+                <label for="available" class="form-label">Available</label>
+                <select class="select" name="available" id="available" th:field="*{available}" >
+                    <option th:if="${vaccine.available != 'true'}" value="true">True</option>
+                    <option th:if="${vaccine.available != 'false'}" value="false">False</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="patients" class="form-label">Patients</label>
+                <input type="number" class="form-control" id="patients" required th:field="*{patients}" name="patients" placeholder="patients">
+            </div>
+
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea class="form-control" id="description" required th:field="*{description}" name="description" placeholder="description"></textarea>
+            </div>
+
+            <div class="col-auto">
+                <button type="submit" class="btn btn-sm btn-primary mb-3">Update Vaccine</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+</body>
+</html>
